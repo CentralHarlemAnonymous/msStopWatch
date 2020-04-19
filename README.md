@@ -3,4 +3,4 @@ Outputs a neat little stopwatch to a 2-line LCD, with physical start/stop button
 
 Uses the newish libraries from Adafruit for interacting with the GPIO pins.
 
-If you choose ot build this project, you'll also want a variable pot connected to the LCD to control contrast. That is reflected in the accompanying schematics but plays no role in the included python code.
+If you choose to build this project, you'll also want a variable pot connected to the LCD to control contrast. That is reflected in the accompanying schematics but plays no role in the included python code.
