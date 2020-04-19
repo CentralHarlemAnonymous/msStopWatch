@@ -113,5 +113,5 @@ while True:
 		if continueUpdating:
 			lcd.message = datetime.now().strftime('%b %d  %H:%M:%S\n') + bottomLine
 		else: #still update clock
-			lcd.message = datetime.now().strftime('%b %d  %H:%M:%S\n')
+			lcd.message = datetime.now().strftime('%b %d  %H:%M:%S')
 		lastLocalTime = localtimer
