@@ -38,9 +38,10 @@ def checkForResetButton():
 	global bottomLine
 	global priorSecsInThisRun
 	global isCounting # could do this with a class and no global variable
+	global continueUpdating
 	if resetButton.value == False: # false = button pressed
 		priorSecsInThisRun = 0
-		# lastSecsPast = 0
+		continueUpdating = True
 		if isCounting == True: # reset time to zero, keep counting
 			startTime = time.time()
 			bottomLine = time_convert(0)
@@ -54,6 +55,7 @@ def checkForCountingButton():	# assumes latching button
 	global bottomLine
 	global isCounting # could do this with a class and no global variable
 	global priorSecsInThisRun
+	global continueUpdating
 	cbv = countButton.value # HIGH == UP == True == button in
 	if isCounting == True and cbv == True: # counting and button is still down
 		secsPast = time.time() - startTime + priorSecsInThisRun
@@ -61,6 +63,7 @@ def checkForCountingButton():	# assumes latching button
 	if isCounting == False and cbv == True:     # button was just pressed in
 #		print('button pressed')
 		isCounting = True
+		continueUpdating = True
 		startTime = time.time()
 		buttonLED.value = True # Turn on
 		bottomLine = time_convert(priorSecsInThisRun)
@@ -69,6 +72,7 @@ def checkForCountingButton():	# assumes latching button
 		buttonLED.value = False # Turn off
 		priorSecsInThisRun = time.time() - startTime + priorSecsInThisRun
 		isCounting = False
+		continueUpdating = False
 		bottomLine = time_convert(priorSecsInThisRun)
 	if isCounting == False and cbv == False: # button is out and has been so
 		bottomLine = bottomLine
@@ -77,6 +81,7 @@ def checkForCountingButton():	# assumes latching button
 
 # before we start the main loop
 isCounting = False # global
+continueUpdating = True # global
 priorSecsInThisRun = 0 # global
 startTime = time.time() # global
 bottomLine = 'ready'.rjust(lcd_columns) # global
@@ -104,7 +109,9 @@ while True:
 	checkForResetButton()
 	# print('secsPast',round(secsPast,1),'lastSecsPast',round(lastSecsPast,1),'bottomline',bottomLine)
 	localtimer = time.time()
-	if localtimer - lastLocalTime >= 0.1:	# limit updates to every 1/10th of a second
-		lcd.clear
-		lcd.message = datetime.now().strftime('%b %d  %H:%M:%S\n') + bottomLine
+	if localtimer - lastLocalTime >= 1:	# update every second
+		if continueUpdating:
+			lcd.message = datetime.now().strftime('%b %d  %H:%M:%S\n') + bottomLine
+		else: #still update clock
+			lcd.message = datetime.now().strftime('%b %d  %H:%M:%S\n')
 		lastLocalTime = localtimer
