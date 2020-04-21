@@ -26,11 +26,14 @@ lcd = characterlcd.Character_LCD_Mono(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6,
                                       lcd_d7, lcd_columns, lcd_rows)
 
 def time_convert(sec):
-	mins = sec // 60
-	sec = sec % 60
-#	hours = mins // 60
-#	mins = mins % 60
-	return ("min: {0} sec: {1}".format(int(mins),int(sec))).rjust(lcd_columns," ")
+        mins = sec // 60
+        sec = sec % 60
+        hours = mins // 60
+        mins = mins % 60
+        hString = 'h:' + '{0}. '.format(int(hours)).rjust(4,' ')
+        mString = 'm:' + '{0}. '.format(int(mins)).rjust(4,' ')
+        sString = 's:' + '{0}'.format(int(sec)).rjust(2,' ')
+        return hString + mString + sString
 
 def checkForResetButton():
 	global resetPin
